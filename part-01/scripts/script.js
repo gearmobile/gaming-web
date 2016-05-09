@@ -1,24 +1,29 @@
-// This is where stuff in our game will happen:
-var scene = new THREE.Scene();
+window.addEventListener('DOMContentLoaded', function () {
 
-// This is what sees the stuff:
-var aspect_ratio = window.innerWidth / window.innerHeight;
-var camera = new THREE.PerspectiveCamera(75, aspect_ratio, 1, 10000);
-camera.position.z = 500;
-scene.add(camera);
+    // THIS IS WHERE STUFF IN OUR GAME WILL HAPPEN:
+    var scene = new THREE.Scene();
 
-// This will draw what the camera sees onto the screen:
-var renderer = new THREE.CanvasRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+// THIS IS WHAT SEES THE STUFF:
+    var aspect_ratio = window.innerWidth / window.innerHeight;
+    var camera = new THREE.PerspectiveCamera( 75, aspect_ratio, 1, 10000 );
+    camera.position.z = 500;
+    scene.add( camera );
+
+// THIS WILL DRAW WHAT THE CAMERA SEES ONTO THE SCREEN:
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setClearColor( 0xffffff );
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    document.body.appendChild( renderer.domElement );
 
 // ******** START CODING ON THE NEXT LINE ********
 
-var shape = new THREE.SphereGeometry(100);
-var cover = new THREE.MeshNormalMaterial();
-var ball = new THREE.Mesh(shape, cover);
-scene.add(ball);
+    var shape = new THREE.SphereGeometry( 100, 20, 6 );
+    var cover = new THREE.MeshNormalMaterial({ wireframe: true });
+    var ball = new THREE.Mesh( shape, cover );
+    scene.add( ball );
 
 
-// Now, show what the camera sees on the screen:
-renderer.render(scene, camera);
+// NOW, SHOW WHAT THE CAMERA SEES ON THE SCREEN:
+    renderer.render( scene, camera );
+
+}, false);
