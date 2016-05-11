@@ -21,7 +21,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
     // START CODING HERE
 
-    var shape = new THREE.CylinderGeometry(100,100,30,20);
+    var shape = new THREE.CylinderGeometry(100,100,20,20);
     var cover = new THREE.MeshNormalMaterial();
     var chunky = new THREE.Mesh(shape,cover);
     scene.add(chunky);
