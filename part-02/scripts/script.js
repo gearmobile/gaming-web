@@ -1,41 +1,34 @@
-/**
- * Created by zencoder on 5/4/16.
- */
+var scene, camera, renderer;
 
 window.addEventListener('DOMContentLoaded', function () {
 
-    var canvas = document.querySelector('#canvas');
-    //var gl = canvas.getContext('webgl');
+    var wWidth = window.innerWidth;
+    var wHeight = window.innerHeight;
 
-    if ( canvas ) {
+    // CREATE SCENE
+    scene = new THREE.Scene();
 
-        var width = window.innerWidth;
-        var height = window.innerHeight;
+    // CREATE AND ADD CAMERA
+    var ratio = wWidth / wHeight;
+    camera = new THREE.PerspectiveCamera(75, ratio, 1, 10000);
+    camera.position.z = 500;
+    scene.add(camera);
 
-        canvas.width = width;
-        canvas.height = height;
+    // PERSPECTIVE CAMERA
+    renderer = new THREE.WebGLRenderer();
+    renderer.setSize(wWidth, wHeight);
+    document.body.appendChild(renderer.domElement);
 
-        var renderer = new THREE.WebGLRenderer({canvas: canvas});
-        renderer.setClearColor(0x000000);
+    // START CODING HERE
 
-        var scene = new THREE.Scene();
+    var shape = new THREE.CubeGeometry(100,100,100);
+    var cover = new THREE.MeshNormalMaterial();
+    var cube = new THREE.Mesh(shape, cover);
+    scene.add(cube);
+    cube.rotation.set(0.5,0.5,0);
 
-        var camera = new THREE.PerspectiveCamera(45, width/height, 0.1, 5000);
-        camera.position.set(0,0,1000);
 
-        var light = new THREE.AmbientLight(0xffffff);
-
-        scene.add(light);
-
-        var geometry = new THREE.SphereGeometry(200,12,12);
-        var material = new THREE.MeshBasicMaterial({color: 0x00ff00, wireframe: true});
-        var mesh = new THREE.Mesh(geometry, material);
-
-        scene.add(mesh);
-
-        renderer.render(scene, camera);
-
-    }
-
+    // RENDERING
+    renderer.render(scene, camera);
 
 }, false);
