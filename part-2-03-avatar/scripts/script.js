@@ -34,10 +34,14 @@ window.addEventListener('DOMContentLoaded', function () {
     // START CODING HERE
     // ***************************************** //
 
+    var marker = new THREE.Object3D(); // create marker
+    scene.add(marker);
+
     var cover = new THREE.MeshNormalMaterial();
     var body = new THREE.SphereGeometry(100);
     var avatar = new THREE.Mesh(body,cover);
-    avatar.add(camera);
+    //avatar.add(camera);
+    marker.add(avatar,camera);
 
     // FIX CAMERA TO AVATAR
     scene.add(avatar);
@@ -118,22 +122,22 @@ window.addEventListener('DOMContentLoaded', function () {
 
         // MOVE LEFT
         if ( event.keyCode === 37 ) {
-            avatar.position.x -= 5;
+            marker.position.x -= 5;
         }
 
         // MOVE RIGHT
         if ( event.keyCode === 39 ) {
-            avatar.position.x += 5;
+            marker.position.x += 5;
         }
 
         // MOVE FORWARD
         if ( event.keyCode === 38 ) {
-            avatar.position.z += 5;
+            marker.position.z += 5;
         }
 
         // MOVE BACKWARD
         if ( event.keyCode === 40 ) {
-            avatar.position.z -= 5;
+            marker.position.z -= 5;
         }
 
         // KEY C
