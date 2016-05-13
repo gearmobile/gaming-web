@@ -1,8 +1,14 @@
 // Ctrl+Shift+J - console Google Chrome
 
-// x-axis - left\right
-// y-axis - up\down
-// z-axis - in\out
+// keypress
+// keydown
+// keyup
+// event.keyCode
+
+// arrow left - 37
+// arrow up - 38
+// arrow down - 40
+// arrow right - 39
 
 var scene, camera, renderer;
 
@@ -18,6 +24,7 @@ window.addEventListener('DOMContentLoaded', function () {
     var ratio = wWidth / wHeight;
     camera = new THREE.PerspectiveCamera(75, ratio, 1, 10000);
     camera.position.z = 500;
+    //scene.add(camera); // deleted
 
     // PERSPECTIVE CAMERA
     renderer = new THREE.WebGLRenderer();
@@ -26,9 +33,6 @@ window.addEventListener('DOMContentLoaded', function () {
 
     // START CODING HERE
     // ***************************************** //
-
-    var is_wheeling = false;
-    var is_flipping = false;
 
     var clock = new THREE.Clock();
 
@@ -48,8 +52,8 @@ window.addEventListener('DOMContentLoaded', function () {
 
     // RIGHT HAND
     var handRight = new THREE.Mesh(hand,cover);
-    handRight.position.set(-150,0,0);
     avatar.add(handRight);
+    handRight.position.set(-150,0,0);
 
     // LEFT HAND
     var handLeft = new THREE.Mesh(hand,cover);
@@ -87,14 +91,27 @@ window.addEventListener('DOMContentLoaded', function () {
 
     }
 
-    function acrobatics () {
-        if ( is_wheeling )
-            handRight.position.z += 0.05;
-        if ( is_flipping )
-            handRight.position.x += 0.05;
+    makeTree(-750,-1000);
+    makeTree(-500,0);
+    makeTree(500,0);
+    makeTree(750,-1000);
+
+    // ROTATE AND FLIP AVATAR
+    function animate () {
+
+        requestAnimationFrame(animate);
+        walk();
+        acrobatics();
+        renderer.render(scene, camera);
+
     }
 
-    function go () {
+    animate();
+
+    var is_wheeling = false;
+    var is_flipping = false;
+
+    function acrobatics () {
         if ( is_wheeling ) {
             avatar.rotation.z += 0.05;
         }
@@ -105,24 +122,22 @@ window.addEventListener('DOMContentLoaded', function () {
     }
 
     function walk () {
-        if ( is_wheeling )
-            handRight.position.z = Math.sin(clock.getElapsedTime()*10)*100;
+        if ( !isWalking() ) return;
+        var position = Math.sin(clock.getElapsedTime()*5)*50;
+        handRight.position.z = position;
+        handLeft.position.z = -position;
+        footLeft.position.z = position;
+        footRight.position.z = -position;
     }
 
-    function animate () {
-        requestAnimationFrame(animate);
-        acrobatics();
-        walk();
-        go();
-        renderer.render(scene, camera);
+    var isMovingRight, isMovingLeft, isMovingForward, isMovingBackward;
+    function isWalking () {
+        if( isMovingForward ) return true;
+        if( isMovingBackward ) return true;
+        if( isMovingLeft ) return true;
+        if( isMovingRight ) return true;
+        return false;
     }
-
-    makeTree(-750,-1000);
-    makeTree(-500,0);
-    makeTree(500,0);
-    makeTree(750,-1000);
-
-    animate();
 
     document.addEventListener('keydown', function (event) {
 
@@ -131,25 +146,29 @@ window.addEventListener('DOMContentLoaded', function () {
         // MOVE LEFT
         if ( event.keyCode === 37 ) {
             marker.position.x -= 5;
+            isMovingLeft = true;
         }
 
         // MOVE RIGHT
         if ( event.keyCode === 39 ) {
             marker.position.x += 5;
+            isMovingRight = true;
         }
 
         // MOVE FORWARD
         if ( event.keyCode === 38 ) {
             marker.position.z += 5;
+            isMovingForward = true;
         }
 
         // MOVE BACKWARD
         if ( event.keyCode === 40 ) {
             marker.position.z -= 5;
+            isMovingBackward = true;
         }
 
         // KEY C
-        if ( event.keyCode === 87 ) {
+        if ( event.keyCode === 67 ) {
             is_wheeling = !is_wheeling;
         }
 
@@ -158,6 +177,14 @@ window.addEventListener('DOMContentLoaded', function () {
             is_flipping = !is_flipping;
         }
 
+    }, false);
+
+    document.addEventListener('keyup', function (event) {
+        var code = event.keyCode;
+        if ( code === 37 ) isMovingLeft = false;
+        if ( code === 38 ) isMovingForward = false;
+        if ( code === 39 ) isMovingRight = false;
+        if ( code === 40 ) isMovingBackward = false;
     }, false);
 
 }, false);
