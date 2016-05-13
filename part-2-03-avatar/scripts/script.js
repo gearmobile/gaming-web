@@ -24,7 +24,7 @@ window.addEventListener('DOMContentLoaded', function () {
     var ratio = wWidth / wHeight;
     camera = new THREE.PerspectiveCamera(75, ratio, 1, 10000);
     camera.position.z = 500;
-    //scene.add(camera);
+    //scene.add(camera); // deleted
 
     // PERSPECTIVE CAMERA
     renderer = new THREE.WebGLRenderer();
@@ -34,17 +34,16 @@ window.addEventListener('DOMContentLoaded', function () {
     // START CODING HERE
     // ***************************************** //
 
-    var marker = new THREE.Object3D(); // create marker
+    var marker = new THREE.Object3D();
     scene.add(marker);
 
     var cover = new THREE.MeshNormalMaterial();
     var body = new THREE.SphereGeometry(100);
     var avatar = new THREE.Mesh(body,cover);
-    //avatar.add(camera);
-    marker.add(avatar,camera);
+    marker.add(avatar);
 
-    // FIX CAMERA TO AVATAR
-    scene.add(avatar);
+    // FIX CAMERA TO MARKER
+    marker.add(camera);
 
     var hand = new THREE.SphereGeometry(50);
     var foot = new THREE.SphereGeometry(50);
