@@ -138,8 +138,14 @@ window.addEventListener('DOMContentLoaded', function () {
         if(isMovingBackward) direction = 0;
         if(isMovingRight) direction = Math.PI/2;
         if(isMovingLeft) direction = -Math.PI/2;
-        avatar.rotation.y = direction;
-        //marker.rotation.y = direction;
+        spinAvatar(direction);
+    }
+
+    function spinAvatar (direction) {
+        new TWEEN.Tween({y:avatar.rotation.y}).to({y:direction},500).
+            onUpdate( function () {
+                avatar.rotation.y = this.y;
+            }).start();
     }
 
     var isMovingRight, isMovingLeft, isMovingForward, isMovingBackward;
