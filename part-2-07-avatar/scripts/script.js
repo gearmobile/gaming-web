@@ -23,6 +23,23 @@ window.addEventListener('DOMContentLoaded', function () {
     // START CODING HERE
     // ***************************************** //
 
+    // SCOREBOARD
+    var scoreboard = new Scoreboard();
+    scoreboard.countdown(45);
+    scoreboard.score();
+    scoreboard.help(
+        'Arrow keys to move. ' +
+        'Space bar to jump for fruit. ' +
+        'Watch for shaking trees with fruit.' +
+        'Get near the tree and jump before the fruit is gone!'
+    );
+
+    var gameOver = false;
+    scoreboard.onTimeExpired(function () {
+        scoreboard.message('Game Over!');
+        gameOver = true;
+    } );
+
     var notAllowed = [];
 
     var clock = new THREE.Clock();
@@ -88,12 +105,19 @@ window.addEventListener('DOMContentLoaded', function () {
 
         scene.add(treeTrunk);
 
+        return treeCrown;
     }
 
-    makeTree(-750,-1000);
-    makeTree(-500,0);
-    makeTree(500,0);
-    makeTree(750,-1000);
+    function shakeTree(){
+        treeWithTreasure = Math.floor( Math.random() * trees.length );
+    }
+
+    var treeWithTreasure;
+    var trees = [];
+    trees.push(makeTree(-750, -1000));
+    trees.push(makeTree(-500, 0));
+    trees.push(makeTree(500, 0));
+    trees.push(makeTree(750, -1000));
 
     // ROTATE AND FLIP AVATAR
     function animate () {

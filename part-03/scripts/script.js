@@ -16,7 +16,9 @@ window.addEventListener('DOMContentLoaded', function () {
 
     // PERSPECTIVE CAMERA
     renderer = new THREE.WebGLRenderer();
+    renderer.shadowMapEnabled = true; // enable shadows
     renderer.setSize(wWidth, wHeight);
+    renderer.setClearColor(0xffffff, 1);
     document.body.appendChild(renderer.domElement);
 
     // START CODING HERE
@@ -32,15 +34,27 @@ window.addEventListener('DOMContentLoaded', function () {
     // CREATE TORUS WITH PHONG MATERIAL
     var torusShape = new THREE.TorusGeometry(100,50,8,20);
     var torusCover = new THREE.MeshPhongMaterial();
-    torusCover.emissive.setRGB(0.8,0.1,0.1);
+    torusCover.emissive.setRGB(0.8, 0.1, 0.1);
+    torusCover.specular.setRGB(0.4, 0.4, 0.4);
     var torus = new THREE.Mesh(torusShape,torusCover);
     scene.add(torus);
+    torus.castShadow = true;
 
     // CREATE LIGHTS
     var sunshine = new THREE.DirectionalLight();
     sunshine.intensity = 0.5;
     sunshine.position.set(100,100,100);
     scene.add(sunshine);
+    sunshine.castShadow = true;
+
+    // CREATE GROUND FOR SHADOW
+    var groundShape = new THREE.PlaneGeometry(1000,1000);
+    var groundCover = new THREE.MeshBasicMaterial();
+    var ground = new THREE.Mesh(groundShape,groundCover);
+    scene.add(ground);
+    ground.position.set(0,-200,0);
+    ground.rotation.set(-Math.PI/2,0,0);
+    ground.receiveShadow = true;
 
 
 
