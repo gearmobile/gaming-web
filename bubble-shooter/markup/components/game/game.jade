@@ -1,0 +1,11 @@
+include ../game-header/game-header
+include ../game-play/game-play
+include ../game-footer/game-footer
+include ../game-start/game-start
+
+mixin game(data)
+    .game#game
+        +game-header()
+        +game-play()
+        +game-footer()
+        +game-start()
